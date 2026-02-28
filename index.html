@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Franco Beloqui // 360021</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@300;500;700&display=swap"
+        rel="stylesheet" />
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --cyan: #00f5ff;
+      --green: #00ff88;
+      --dark: #020b10;
+      --mid: #071520;
+      --panel: #0a1e2e;
+      --border: rgba(0, 245, 255, 0.15);
+    }
+
+    body {
+      background: var(--dark);
+      color: #c8e8f0;
+      font-family: 'Rajdhani', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Animated grid background */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0, 245, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 245, 255, 0.04) 1px, transparent 1px);
+      background-size: 40px 40px;
+      animation: gridMove 20s linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes gridMove {
+      from {
+        transform: translateY(0);
+      }
+
+      to {
+        transform: translateY(40px);
+      }
+    }
+
+    /* Scanlines */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(0deg,
+          transparent,
+          transparent 2px,
+          rgba(0, 0, 0, 0.15) 2px,
+          rgba(0, 0, 0, 0.15) 4px);
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    .container {
+      position: relative;
+      z-index: 5;
+      width: 680px;
+      max-width: 95vw;
+      animation: fadeIn 1.2s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Top bar */
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--cyan);
+      opacity: 0.6;
+      margin-bottom: 6px;
+      letter-spacing: 0.1em;
+    }
+
+    .topbar .blink {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background: var(--green);
+      border-radius: 50%;
+      animation: blink 1.2s step-start infinite;
+      margin-right: 6px;
+    }
+
+    @keyframes blink {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0;
+      }
+    }
+
+    /* Main card */
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      position: relative;
+      padding: 40px 44px;
+      clip-path: polygon(0 0, calc(100% - 24px) 0, 100% 24px, 100% 100%, 24px 100%, 0 calc(100% - 24px));
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(0, 245, 255, 0.04) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    /* Corner accents */
+    .corner {
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      border-color: var(--cyan);
+      border-style: solid;
+      opacity: 0.7;
+    }
+
+    .corner.tl {
+      top: 8px;
+      left: 8px;
+      border-width: 2px 0 0 2px;
+    }
+
+    .corner.br {
+      bottom: 8px;
+      right: 8px;
+      border-width: 0 2px 2px 0;
+    }
+
+    /* Header label */
+    .label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--cyan);
+      letter-spacing: 0.25em;
+      opacity: 0.6;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    /* Name */
+    .name {
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700;
+      font-size: clamp(2.4rem, 6vw, 3.8rem);
+      line-height: 1;
+      letter-spacing: 0.04em;
+      color: #fff;
+      text-shadow: 0 0 30px rgba(0, 245, 255, 0.4), 0 0 60px rgba(0, 245, 255, 0.15);
+      margin-bottom: 6px;
+      position: relative;
+    }
+
+    .name::after {
+      content: attr(data-text);
+      position: absolute;
+      left: 3px;
+      top: 3px;
+      color: var(--cyan);
+      opacity: 0.08;
+      z-index: -1;
+    }
+
+    /* Divider line */
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, var(--cyan), transparent);
+      margin: 22px 0;
+      position: relative;
+    }
+
+    .divider::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: -2px;
+      width: 6px;
+      height: 5px;
+      background: var(--cyan);
+      box-shadow: 0 0 8px var(--cyan);
+    }
+
+    /* Data rows */
+    .data-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .data-block {
+      position: relative;
+    }
+
+    .data-key {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.62rem;
+      color: var(--cyan);
+      letter-spacing: 0.2em;
+      opacity: 0.55;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .data-val {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 1.45rem;
+      color: #fff;
+      letter-spacing: 0.06em;
+      text-shadow: 0 0 14px rgba(0, 245, 255, 0.35);
+    }
+
+    .data-val.accent {
+      color: var(--green);
+      text-shadow: 0 0 14px rgba(0, 255, 136, 0.4);
+    }
+
+    /* Progress-style decoration */
+    .bar-wrap {
+      margin-top: 28px;
+      display: flex;
+      gap: 4px;
+      align-items: center;
+    }
+
+    .bar-seg {
+      height: 3px;
+      background: var(--cyan);
+      opacity: 0.2;
+      flex: 1;
+      transition: opacity 0.3s;
+    }
+
+    .bar-seg.active {
+      opacity: 0.9;
+    }
+
+    .bar-seg.mid {
+      opacity: 0.5;
+    }
+
+    /* Footer */
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.6rem;
+      color: var(--cyan);
+      opacity: 0.35;
+      margin-top: 8px;
+      letter-spacing: 0.1em;
+    }
+
+    /* Floating particles */
+    .particles {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .particle {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: var(--cyan);
+      border-radius: 50%;
+      animation: floatUp linear infinite;
+      opacity: 0;
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(100vh);
+        opacity: 0;
+      }
+
+      10% {
+        opacity: 0.6;
+      }
+
+      90% {
+        opacity: 0.3;
+      }
+
+      100% {
+        transform: translateY(-20px);
+        opacity: 0;
+      }
+    }
+
+    /* Subtitle */
+    .subtitle {
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700;
+      font-size: clamp(2.8rem, 8vw, 5rem);
+      letter-spacing: 0.35em;
+      text-align: center;
+      color: var(--cyan);
+      text-shadow: 0 0 30px rgba(0, 245, 255, 0.5), 0 0 60px rgba(0, 245, 255, 0.2);
+      margin-top: 22px;
+      text-transform: uppercase;
+      border-top: 1px solid var(--border);
+      padding-top: 16px;
+    }
+
+    /* Glitch animation on name hover */
+    .name:hover {
+      animation: glitch 0.3s steps(2) infinite;
+    }
+
+    @keyframes glitch {
+      0% {
+        text-shadow: -2px 0 var(--cyan), 2px 0 #ff0080, 0 0 30px rgba(0, 245, 255, 0.4);
+      }
+
+      33% {
+        text-shadow: 2px 0 var(--cyan), -2px 0 #ff0080, 0 0 30px rgba(0, 245, 255, 0.4);
+      }
+
+      66% {
+        text-shadow: 0 2px var(--cyan), 0 -2px #ff0080, 0 0 30px rgba(0, 245, 255, 0.4);
+      }
+
+      100% {
+        text-shadow: 0 0 30px rgba(0, 245, 255, 0.4);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Particles -->
+  <div class="particles" id="particles"></div>
+
+  <div class="container">
+    <div class="topbar">
+      <span><span class="blink"></span>SISTEMA ACTIVO</span>
+      <span id="clock">--:--:--</span>
+      <span>SYS_REV 1.0</span>
+    </div>
+
+    <div class="card">
+      <div class="corner tl"></div>
+      <div class="corner br"></div>
+
+      <div class="label">// Identificación de Estudiante</div>
+
+      <div class="name" data-text="FRANCO BELOQUI">FRANCO BELOQUI</div>
+
+      <div class="divider"></div>
+
+      <div class="data-grid">
+        <div class="data-block">
+          <div class="data-key">// Número de Estudiante</div>
+          <div class="data-val">360021</div>
+        </div>
+        <div class="data-block">
+          <div class="data-key">// Grupo</div>
+          <div class="data-val accent">N1.5B</div>
+        </div>
+      </div>
+
+      <div class="bar-wrap">
+        <div class="bar-seg active"></div>
+        <div class="bar-seg active"></div>
+        <div class="bar-seg active"></div>
+        <div class="bar-seg mid"></div>
+        <div class="bar-seg mid"></div>
+        <div class="bar-seg"></div>
+        <div class="bar-seg"></div>
+        <div class="bar-seg"></div>
+        <div class="bar-seg"></div>
+        <div class="bar-seg"></div>
+        <div class="bar-seg"></div>
+        <div class="bar-seg"></div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <span>ACCESO VERIFICADO</span>
+      <span>BELOQUI_F :: 360021 :: N1.5B</span>
+    </div>
+
+    <h1 class="subtitle">Azure + GitHub</h1>
+  </div>
+
+  <script>
+    // Clock
+    function updateClock() {
+      const now = new Date();
+      const h = String(now.getHours()).padStart(2, '0');
+      const m = String(now.getMinutes()).padStart(2, '0');
+      const s = String(now.getSeconds()).padStart(2, '0');
+      document.getElementById('clock').textContent = `${h}:${m}:${s}`;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // Particles
+    const container = document.getElementById('particles');
+    for (let i = 0; i < 28; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      p.style.left = Math.random() * 100 + 'vw';
+      p.style.animationDuration = (6 + Math.random() * 14) + 's';
+      p.style.animationDelay = (Math.random() * 14) + 's';
+      p.style.width = p.style.height = (Math.random() > 0.6 ? '3px' : '2px');
+      container.appendChild(p);
+    }
+  </script>
+</body>
+
+</html>
